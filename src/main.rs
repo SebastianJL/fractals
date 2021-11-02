@@ -28,7 +28,12 @@ where
     iter_grid
 }
 
-fn meshgrid(xrange: Array1<f64>, yrange: Array1<f64>) -> Array2<Complex64> {
+/// Return a 2d grid of complex numbers.
+///
+/// Creates a 2d grid of complex numbers with `xrange` and `yrange` coordinates.
+/// Functions similar to numpy.meshgrid but instead of computing two separate 2d arrays
+/// for x and y coordinates it puts them in a 2d grid of complex numbers.
+fn complex_grid(xrange: Array1<f64>, yrange: Array1<f64>) -> Array2<Complex64> {
     let mut grid = Array2::<Complex64>::zeros((xrange.len(), yrange.len()));
 
     for (i, x) in xrange.into_iter().enumerate() {
@@ -57,9 +62,9 @@ fn main() {
     let n_grid_y = n_grid_x * (xmax - xmin) / (ymax - ymin);
     let n_grid_x = n_grid_x as usize;
     let n_grid_y = n_grid_y as usize;
-    let xrange = Array1::<f64>::linspace(xmin, xmax, n_grid_x);
-    let yrange = Array1::<f64>::linspace(ymin, ymax, n_grid_y);
-    let grid = meshgrid(xrange, yrange);
+    let x = Array1::<f64>::linspace(xmin, xmax, n_grid_x);
+    let y = Array1::<f64>::linspace(ymin, ymax, n_grid_y);
+    let grid = complex_grid(x, y);
 
     let iter_grid = fatou_grid(&grid, mandelbrot, 255);
     let iter_grid = array_to_grayscale(iter_grid);
