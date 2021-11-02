@@ -51,9 +51,14 @@ fn array_to_grayscale(arr: Array2<u8>) -> GrayImage {
 }
 
 fn main() {
-    let n_grid = 20_000;
-    let xrange = Array1::<f64>::linspace(-2., 2., n_grid);
-    let yrange = Array1::<f64>::linspace(-1., 1., n_grid / 2);
+    let (xmin, xmax) = (-1.5, 0.5);
+    let (ymin, ymax) = (-1., 1.);
+    let n_grid_x = 20_000.;
+    let n_grid_y = n_grid_x * (xmax - xmin) / (ymax - ymin);
+    let n_grid_x = n_grid_x as usize;
+    let n_grid_y = n_grid_y as usize;
+    let xrange = Array1::<f64>::linspace(xmin, xmax, n_grid_x);
+    let yrange = Array1::<f64>::linspace(ymin, ymax, n_grid_y);
     let grid = meshgrid(xrange, yrange);
 
     let iter_grid = fatou_grid(&grid, mandelbrot, 255);
