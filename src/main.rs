@@ -22,10 +22,11 @@ fn fatou_grid<F>(
 where
     F: Fn(Complex32, Complex32) -> Complex32,
 {
-    let mut iter_grid = Array2::<u8>::zeros((xrange.len(), yrange.len()));
+    let mut iter_grid = Array2::<u8>::zeros((yrange.len(), xrange.len()));
+
     let z0 = Complex32::new(0., 0.);
-    for (i, x) in xrange.iter().enumerate() {
-        for (j, y) in yrange.iter().enumerate() {
+    for (i, y) in yrange.iter().enumerate() {
+        for (j, x) in xrange.iter().enumerate() {
             let mut z = z0;
             for iter in 0..max_iter {
                 let c = Complex32::new(*x, *y);
@@ -43,6 +44,7 @@ where
 
 fn array_to_grayscale(arr: Array2<u8>) -> GrayImage {
     assert!(arr.is_standard_layout());
+    assert!(arr.len() > 0);
 
     let (height, width) = arr.dim();
     let raw = arr.into_raw_vec();
@@ -56,14 +58,14 @@ fn main() {
     if 1 == 1 {
         let (xmin, xmax) = (-2.5, 1.);
         let (ymin, ymax) = (-1., 1.);
-        let n_grid_x = 30_000.;
+        let n_grid_x = 20_00.;
         let n_grid_y = n_grid_x * (ymax - ymin) / (xmax - xmin);
         let n_grid_x = n_grid_x as usize;
         let n_grid_y = n_grid_y as usize;
         let x = Array1::<f32>::linspace(xmin, xmax, n_grid_x);
         let y = Array1::<f32>::linspace(ymin, ymax, n_grid_y);
 
-        let max_iter = 300;
+        let max_iter = 100;
         let div_radius = 2.;
         let iter_grid = fatou_grid(x, y, mandelbrot, div_radius, max_iter);
         let iter_grid = array_to_grayscale(iter_grid);
@@ -73,17 +75,17 @@ fn main() {
     }
 
     // Draw burning ship
-    if 1 == 0 {
-        let (xmin, xmax) = (-4., 4.);
-        let (ymin, ymax) = (-4., 4.);
-        let n_grid_x = 20_000.;
+    if 1 == 1 {
+        let (xmin, xmax) = (-1.8, -1.7);
+        let (ymin, ymax) = (-0.09, 0.01);
+        let n_grid_x = 20_00.;
         let n_grid_y = n_grid_x * (ymax - ymin) / (xmax - xmin);
         let n_grid_x = n_grid_x as usize;
         let n_grid_y = n_grid_y as usize;
         let x = Array1::<f32>::linspace(xmin, xmax, n_grid_x);
         let y = Array1::<f32>::linspace(ymin, ymax, n_grid_y);
 
-        let max_iter = 500;
+        let max_iter = 100;
         let div_radius = 4.;
         let iter_grid = fatou_grid(x, y, burning_ship, div_radius, max_iter);
         let iter_grid = array_to_grayscale(iter_grid);
