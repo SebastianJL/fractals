@@ -58,7 +58,7 @@ fn main() {
     if 1 == 1 {
         let (xmin, xmax) = (-2.5, 1.);
         let (ymin, ymax) = (-1., 1.);
-        let n_grid_x = 20_00.;
+        let n_grid_x = 20_000.;
         let n_grid_y = n_grid_x * (ymax - ymin) / (xmax - xmin);
         let n_grid_x = n_grid_x as usize;
         let n_grid_y = n_grid_y as usize;
@@ -70,7 +70,10 @@ fn main() {
         let iter_grid = fatou_grid(x, y, mandelbrot, div_radius, max_iter);
         let iter_grid = array_to_grayscale(iter_grid);
         iter_grid
-            .save("output/mandelbrot_out.png")
+            .save(format!(
+                "output/mandelbrot_out_n_grid_x_{}_max_iter_{}.png",
+                n_grid_x, max_iter
+            ))
             .expect("couldn't save");
     }
 
@@ -78,7 +81,7 @@ fn main() {
     if 1 == 1 {
         let (xmin, xmax) = (-1.8, -1.7);
         let (ymin, ymax) = (-0.09, 0.01);
-        let n_grid_x = 20_00.;
+        let n_grid_x = 20_000.;
         let n_grid_y = n_grid_x * (ymax - ymin) / (xmax - xmin);
         let n_grid_x = n_grid_x as usize;
         let n_grid_y = n_grid_y as usize;
@@ -90,7 +93,10 @@ fn main() {
         let iter_grid = fatou_grid(x, y, burning_ship, div_radius, max_iter);
         let iter_grid = array_to_grayscale(iter_grid);
         iter_grid
-            .save("output/burning_ship_out.png")
+            .save(format!(
+                "output/burning_ship_out_n_grid_x_{}_max_iter_{}.png",
+                n_grid_x, max_iter
+            ))
             .expect("couldn't save");
     }
 }
